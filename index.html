@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ubuntu VPS Lab | GitHub + Dokploy</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <nav>
+      <div class="brand"><span class="logo">●</span> Ubuntu VPS Lab</div>
+      <div class="nav-links">
+        <a href="#flujo">Flujo</a>
+        <a href="#ubuntu">Ubuntu</a>
+        <a href="#github">GitHub</a>
+        <a href="#dokploy">Dokploy</a>
+        <a href="#deploy">Deploy</a>
+      </div>
+    </nav>
+    <div class="hero-content">
+      <div>
+        <span class="tag">GUÍA PRÁCTICA • VPS CASERO</span>
+        <h1>Ubuntu + GitHub + Dokploy</h1>
+        <p>Convierte una computadora Ubuntu en un servidor para publicar tus páginas web y actualizar el sitio desde GitHub.</p>
+        <a class="btn" href="#flujo">Ver cómo funciona</a>
+      </div>
+      <div class="terminal-card">
+        <div class="terminal-top"><i></i><i></i><i></i><span>antonio@moguel:~</span></div>
+        <pre><code>$ docker service ls
+dokploy            1/1
+dokploy-postgres   1/1
+dokploy-redis      1/1
+
+$ curl -I localhost:3000
+HTTP/1.1 307
+Location: /register</code></pre>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="flujo" class="section">
+      <span class="eyebrow">01 · EL FLUJO</span>
+      <h2>De tu código a una página publicada</h2>
+      <p class="lead">La idea es que GitHub guarde tu proyecto y Dokploy se encargue del despliegue en tu Ubuntu.</p>
+      <div class="flow">
+        <div class="flow-card"><b>01</b><span class="icon">💻</span><h3>Creas</h3><p>HTML, CSS y JavaScript.</p></div>
+        <div class="arrow">→</div>
+        <div class="flow-card"><b>02</b><span class="icon">🐙</span><h3>Subes</h3><p>Haces commit y push a GitHub.</p></div>
+        <div class="arrow">→</div>
+        <div class="flow-card"><b>03</b><span class="icon">🚀</span><h3>Dokploy</h3><p>Detecta el repositorio y despliega.</p></div>
+        <div class="arrow">→</div>
+        <div class="flow-card"><b>04</b><span class="icon">🌐</span><h3>Publicas</h3><p>Abres el dominio o IP de tu servidor.</p></div>
+      </div>
+    </section>
+
+    <section id="ubuntu" class="section dark">
+      <span class="eyebrow">02 · UBUNTU</span>
+      <h2>Preparar el VPS casero</h2>
+      <div class="grid">
+        <article class="step"><div class="number">1</div><h3>Actualizar Ubuntu</h3><pre><code>sudo apt update
+sudo apt upgrade -y</code></pre></article>
+        <article class="step"><div class="number">2</div><h3>Comprobar Docker</h3><pre><code>docker --version
+docker compose version</code></pre></article>
+        <article class="step"><div class="number">3</div><h3>Comprobar Swarm</h3><pre><code>sudo docker service ls</code></pre><p>No ejecutes <b>docker swarm init</b> si tu nodo ya pertenece a un Swarm.</p></article>
+        <article class="step"><div class="number">4</div><h3>Entrar a Dokploy</h3><pre><code>http://192.168.100.3:3000</code></pre><p>La IP es un ejemplo para una red local. Usa la IP real de tu servidor.</p></article>
+      </div>
+    </section>
+
+    <section id="github" class="section">
+      <span class="eyebrow">03 · GITHUB</span>
+      <h2>Crear el repositorio</h2>
+      <div class="visual-guide">
+        <div class="mock-window">
+          <div class="mock-bar">GitHub · New repository</div>
+          <div class="mock-body">
+            <div class="mock-label">Repository name</div>
+            <div class="mock-input">ubuntu-dokploy-web</div>
+            <div class="mock-label">Description</div>
+            <div class="mock-input">Mi página publicada con Ubuntu y Dokploy</div>
+            <div class="mock-row"><span class="pill">Public</span><span class="pill muted">Private</span></div>
+            <button class="fake-button">Create repository</button>
+          </div>
+        </div>
+        <div class="instructions">
+          <h3>Pasos visuales</h3>
+          <ol>
+            <li>En GitHub pulsa <b>+</b> → <b>New repository</b>.</li>
+            <li>Escribe el nombre del repositorio.</li>
+            <li>Elige la visibilidad.</li>
+            <li>Crea el repositorio.</li>
+          </ol>
+          <p>GitHub documenta la creación de repositorios desde la interfaz web. Después puedes subir tu proyecto mediante Git.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section accent-section">
+      <span class="eyebrow">04 · TU PROYECTO</span>
+      <h2>Una página sencilla para empezar</h2>
+      <div class="code-layout">
+        <div class="file-tree">
+          <div>📁 ubuntu-dokploy-web</div>
+          <div class="file">📄 index.html</div>
+          <div class="file">🎨 style.css</div>
+          <div class="file">⚡ script.js</div>
+        </div>
+        <pre class="big-code"><code>&lt;link rel="stylesheet" href="style.css"&gt;
+
+&lt;h1&gt;Mi VPS con Ubuntu&lt;/h1&gt;
+&lt;p&gt;GitHub → Dokploy → Web&lt;/p&gt;
+
+&lt;script src="script.js"&gt;&lt;/script&gt;</code></pre>
+      </div>
+      <div class="terminal-wide"><code>git add .</code><code>git commit -m "Mi primera web"</code><code>git push origin main</code></div>
+    </section>
+
+    <section id="dokploy" class="section dark">
+      <span class="eyebrow">05 · DOKPLOY</span>
+      <h2>Vincular GitHub con Dokploy</h2>
+      <div class="timeline">
+        <div><span>01</span><h3>Git → GitHub</h3><p>Entra a la sección Git de Dokploy y selecciona GitHub.</p></div>
+        <div><span>02</span><h3>Create Github App</h3><p>Crea una aplicación con un nombre único, por ejemplo <b>Dokploy-Github-App</b>.</p></div>
+        <div><span>03</span><h3>Install</h3><p>Instala la aplicación en tu cuenta de GitHub.</p></div>
+        <div><span>04</span><h3>Seleccionar repositorio</h3><p>Puedes permitir todos los repositorios o solamente el que vas a desplegar.</p></div>
+        <div><span>05</span><h3>Install & Authorize</h3><p>Autoriza el acceso y vuelve a Dokploy.</p></div>
+      </div>
+    </section>
+
+    <section id="deploy" class="section">
+      <span class="eyebrow">06 · DEPLOY</span>
+      <h2>Publicar tu página HTML</h2>
+      <div class="deploy-box">
+        <div class="deploy-row"><span>Source</span><b>GitHub</b></div>
+        <div class="deploy-row"><span>Repository</span><b>ubuntu-dokploy-web</b></div>
+        <div class="deploy-row"><span>Branch</span><b>main</b></div>
+        <div class="deploy-row"><span>Build Type</span><b>Static</b></div>
+        <div class="deploy-row"><span>Build Path</span><b>/</b></div>
+        <div class="deploy-row"><span>Port</span><b>80</b></div>
+        <button class="deploy-button" onclick="deployDemo()">🚀 DEPLOY</button>
+        <p id="status" class="status"></p>
+      </div>
+      <div class="result">
+        <span>RESULTADO</span>
+        <h3>GitHub → Dokploy → navegador</h3>
+        <p>Cuando hagas nuevos <code>git push</code> a la rama configurada, Dokploy puede volver a desplegar la aplicación automáticamente.</p>
+      </div>
+    </section>
+
+    <section class="section resources">
+      <span class="eyebrow">07 · REFERENCIAS</span>
+      <h2>Documentación oficial</h2>
+      <div class="resource-grid">
+        <a href="https://docs.dokploy.com/docs/core/installation" target="_blank">Dokploy · Instalación ↗</a>
+        <a href="https://docs.dokploy.com/docs/core/github" target="_blank">Dokploy · GitHub ↗</a>
+        <a href="https://docs.dokploy.com/docs/core/html" target="_blank">Dokploy · HTML ↗</a>
+        <a href="https://docs.github.com/es/repositories/creating-and-managing-repositories/creating-a-new-repository" target="_blank">GitHub · Crear repositorio ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Ubuntu VPS Lab · Guía educativa de GitHub + Dokploy</p>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
